@@ -15,9 +15,13 @@ class DeviceInfoMiddleware(object):
         width = None
         height = None
         if value is not None:
-            # FIXME: Handle errors
-            width, height = value.split(':')
-            width, height = int(width), int(height)
+            try:
+                width, height = value.split(':')
+                width, height = int(width), int(height)
+            except ValueError:
+                # TODO: Add logging
+                width = None
+                height = None
         request.device = {'width': width, 'height': height}
 
     def process_response(self, request, response):
