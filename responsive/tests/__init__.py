@@ -1,1 +1,1 @@
-from .test_middleware import DeviceInfoMiddlewareTestCase
+from .test_middleware import ProcessDeviceInfoTestCase, DeviceInfoScriptTestCase

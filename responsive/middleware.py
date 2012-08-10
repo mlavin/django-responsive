@@ -25,6 +25,7 @@ class DeviceInfoMiddleware(object):
         request.device = {'width': width, 'height': height}
 
     def process_response(self, request, response):
+        "Insert necessary javascript to set device info cookie."
         is_gzipped = 'gzip' in response.get('Content-Encoding', '')
         is_html = response.get('Content-Type', '').split(';')[0] in _HTML_TYPES
         if is_html and not is_gzipped:
