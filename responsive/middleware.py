@@ -1,5 +1,6 @@
 "Middleware to inject necessary JS and include device info on the request."
 
+import os
 import re
 
 
@@ -30,7 +31,9 @@ class DeviceInfoMiddleware(object):
         is_html = response.get('Content-Type', '').split(';')[0] in _HTML_TYPES
         if is_html and not is_gzipped:
             pattern = re.compile(u"<head>", re.IGNORECASE)
-            js = u"document.cookie='resolution='+screen.width+':'+screen.height+'; path=/';"
+            path = os.path.join(os.path.dirname(__file__), 'static', 'responsive')
+            with open(os.path.join(path, 'js', 'responsive.min.js'), 'r') as f:
+                js = f.read()
             script = u'<script type="text/javascript">{0}</script>'.format(js)
             response.content = pattern.sub(u"<head>{0}".format(script), response.content)
             if response.get('Content-Length', None):
