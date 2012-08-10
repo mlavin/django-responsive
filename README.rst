@@ -7,8 +7,8 @@ Django-Responsive
         :target: https://secure.travis-ci.org/mlavin/django-responsive
 
 
-django-responsive is a handful of utilities for building responsive websites
-in Django. This tools are meant to complement the use of CSS media queries and
+django-responsive a utility application for building responsive websites
+in Django. This tool is meant to complement the use of CSS media queries and
 help solve problems with fixed width elements such as advertisements or embedded video.
 
 This project does *not* match devices based on user agent strings and instead
@@ -17,7 +17,7 @@ Once enabled you can access a ``device_info`` dictionary in your templates::
 
     {'width': 320, 'type': 'phone', 'height': 480}
 
-Allowing you to conditionally render content based on the device size or type.
+Now you and conditionally render content based on the device size or type.
 
 
 Installation
