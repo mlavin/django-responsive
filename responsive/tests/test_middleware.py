@@ -19,8 +19,8 @@ class ProcessDeviceInfoTestCase(unittest.TestCase):
     def test_process_request_no_cookies(self):
         "Process a request which does not have the info cookie set."
         self.middleware.process_request(request=self.request)
-        self.assertTrue(hasattr(self.request, 'device'))
-        device = self.request.device
+        self.assertTrue(hasattr(self.request, 'device_info'))
+        device = self.request.device_info
         self.assertEqual(device['width'], None)
         self.assertEqual(device['height'], None)
 
@@ -28,8 +28,8 @@ class ProcessDeviceInfoTestCase(unittest.TestCase):
         "Process a request which has an invalid value in the cookie."
         self.request.COOKIES['resolution'] = 'XXXXXXXXXXXXXXX'
         self.middleware.process_request(request=self.request)
-        self.assertTrue(hasattr(self.request, 'device'))
-        device = self.request.device
+        self.assertTrue(hasattr(self.request, 'device_info'))
+        device = self.request.device_info
         self.assertEqual(device['width'], None)
         self.assertEqual(device['height'], None)
 
@@ -37,8 +37,8 @@ class ProcessDeviceInfoTestCase(unittest.TestCase):
         "Read data from the cookie and make it available on the request."
         self.request.COOKIES['resolution'] = '320:480'
         self.middleware.process_request(request=self.request)
-        self.assertTrue(hasattr(self.request, 'device'))
-        device = self.request.device
+        self.assertTrue(hasattr(self.request, 'device_info'))
+        device = self.request.device_info
         self.assertEqual(device['width'], 320)
         self.assertEqual(device['height'], 480)
 

@@ -1,1 +1,2 @@
+from .test_context_processors import DeviceInfoContextTestCase
 from .test_middleware import ProcessDeviceInfoTestCase, DeviceInfoScriptTestCase

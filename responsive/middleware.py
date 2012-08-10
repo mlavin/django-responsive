@@ -22,7 +22,7 @@ class DeviceInfoMiddleware(object):
                 # TODO: Add logging
                 width = None
                 height = None
-        request.device = {'width': width, 'height': height}
+        request.device_info = {'width': width, 'height': height}
 
     def process_response(self, request, response):
         "Insert necessary javascript to set device info cookie."
