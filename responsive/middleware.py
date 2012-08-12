@@ -3,6 +3,8 @@
 import os
 import re
 
+from django.utils.encoding import force_unicode
+
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
@@ -35,7 +37,7 @@ class DeviceInfoMiddleware(object):
             with open(os.path.join(path, 'js', 'responsive.min.js'), 'r') as f:
                 js = f.read()
             script = u'<script type="text/javascript">{0}</script>'.format(js)
-            response.content = pattern.sub(u"<head>{0}".format(script), response.content)
+            response.content = pattern.sub(u"<head>{0}".format(script), force_unicode(response.content))
             if response.get('Content-Length', None):
                 response['Content-Length'] = len(response.content)
         return response
