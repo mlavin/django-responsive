@@ -95,3 +95,21 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
         response['Content-Encoding'] = 'gzip'
         response = self.middleware.process_response(self.request, response)
         self.assertFalse('</script>' in response.content)
+
+    def test_unicode_content(self):
+        "Ensure insertion will still work with unicode body content."
+        html = u"""
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+        <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">  
+            <head>  
+                <meta http-equiv="content-type" content="text/html; charset=utf-8"/>  
+                <title>title</title>
+            </head>
+            <body>\x80abc</body>  
+        </html>
+        """
+        response = self.view(self.request, content=html)
+        self.assertFalse('</script>' in response.content)
+        response = self.middleware.process_response(self.request, response)
+        self.assertTrue('</script>' in response.content)
