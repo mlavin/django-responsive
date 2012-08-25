@@ -15,7 +15,7 @@
     // Set the cookie
     document.cookie = cookieName + '=' + screen.width + ':' + screen.height + '; path=/';
     // Force browser refresh if not previously set
-    if (!prevSet) document.location.reload(true);
+    if (navigator.cookieEnabled && !prevSet) document.location.reload(true);
 }(document, screen));
 
 
