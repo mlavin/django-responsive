@@ -19,7 +19,7 @@ setup(
     author_email='markdlavin@gmail.com',
     packages=find_packages(),
     include_package_data=True,
-    url='https://github.com/mlavin/django-responsive>',
+    url='https://github.com/mlavin/django-responsive',
     license='BSD',
     description=u' '.join(__import__('responsive').__doc__.splitlines()).strip(),
     classifiers=[
