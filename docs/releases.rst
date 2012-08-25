@@ -4,6 +4,12 @@ Release History
 Release and change history for django-responsive
 
 
+v0.1.2 (2012-08-25)
+------------------------------------
+
+- Fixed infinite redirection when browser cookies are disabled.
+
+
 v0.1.1 (2012-08-12)
 ------------------------------------
 
