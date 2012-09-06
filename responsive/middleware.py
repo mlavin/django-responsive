@@ -1,10 +1,8 @@
 "Middleware to inject necessary JS and include device info on the request."
+from __future__ import unicode_literals
 
 import os
 import re
-
-from django.utils.encoding import force_unicode
-
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
@@ -32,12 +30,12 @@ class DeviceInfoMiddleware(object):
         is_gzipped = 'gzip' in response.get('Content-Encoding', '')
         is_html = response.get('Content-Type', '').split(';')[0] in _HTML_TYPES
         if is_html and not is_gzipped:
-            pattern = re.compile(u"<head>", re.IGNORECASE)
+            pattern = re.compile('<head>', re.IGNORECASE)
             path = os.path.join(os.path.dirname(__file__), 'static', 'responsive')
             with open(os.path.join(path, 'js', 'responsive.min.js'), 'r') as f:
                 js = f.read()
-            script = u'<script type="text/javascript">{0}</script>'.format(js)
-            response.content = pattern.sub(u"<head>{0}".format(script), force_unicode(response.content))
+            script = b'<script type="text/javascript">' + bytes(js) + b'</script>'
+            response.content = pattern.sub(b'<head>' + script, response.content)
             if response.get('Content-Length', None):
                 response['Content-Length'] = len(response.content)
         return response

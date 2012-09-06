@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import re
 
 from django.http import HttpResponse
@@ -54,7 +56,7 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
         def view(request, **kwargs):
             if 'content' not in kwargs:
             # Return a miminally valid HTML doc
-                html = """
+                html = b"""
                 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  
                 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
                 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">  
@@ -73,32 +75,32 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
     def test_insert_script_tag(self):
         "Insert script tag for setting cookie in the <head>."
         response = self.view(self.request)
-        self.assertFalse('</script>' in response.content)
+        self.assertFalse(b'</script>' in response.content)
         response = self.middleware.process_response(self.request, response)
-        self.assertTrue('</script>' in response.content)
+        self.assertTrue(b'</script>' in response.content)
         # Do a little more digging to ensure it's inside <head>
         pattern = re.compile(r'<head>(?P<inner>.*)</head>', re.MULTILINE | re.DOTALL)
         # Parsing HTML with regex is not possible in general but we have
         # control over the exact HTML
         head = pattern.search(response.content).groupdict()['inner']
-        self.assertTrue('</script>' in head)
+        self.assertTrue(b'</script>' in head)
 
     def test_non_html_content_type(self):
         "Don't insert if the content type is not html or xhtml."
         response = self.view(self.request, content='{}', content_type='application/json')
         response = self.middleware.process_response(self.request, response)
-        self.assertFalse('</script>' in response.content)
+        self.assertFalse(b'</script>' in response.content)
 
     def test_gzipped_html(self):
         "Don't insert if the content had been gzipped."
         response = self.view(self.request)
         response['Content-Encoding'] = 'gzip'
         response = self.middleware.process_response(self.request, response)
-        self.assertFalse('</script>' in response.content)
+        self.assertFalse(b'</script>' in response.content)
 
     def test_unicode_content(self):
         "Ensure insertion will still work with unicode body content."
-        html = u"""
+        html = b"""
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
         <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">  
@@ -106,10 +108,10 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
                 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>  
                 <title>title</title>
             </head>
-            <body>\x80abc</body>  
+            <body>\xc2\x80abc</body>  
         </html>
         """
         response = self.view(self.request, content=html)
-        self.assertFalse('</script>' in response.content)
+        self.assertFalse(b'</script>' in response.content)
         response = self.middleware.process_response(self.request, response)
-        self.assertTrue('</script>' in response.content)
+        self.assertTrue(b'</script>' in response.content)
