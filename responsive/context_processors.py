@@ -5,7 +5,7 @@ from .conf import BREAKPOINTS
 
 def _get_device_type(width):
     "Returns the type based on set breakpoints."
-    sorted_types = sorted(BREAKPOINTS.items(), key=lambda x: x[1])
+    sorted_types = sorted(BREAKPOINTS.items(), key=lambda x: x[1] or 0)
     default_type = None
     for name, cutoff in sorted_types:
         if cutoff is None:
