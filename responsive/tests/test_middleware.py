@@ -79,7 +79,7 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
         response = self.middleware.process_response(self.request, response)
         self.assertTrue(b'</script>' in response.content)
         # Do a little more digging to ensure it's inside <head>
-        pattern = re.compile(r'<head>(?P<inner>.*)</head>', re.MULTILINE | re.DOTALL)
+        pattern = re.compile(b'<head>(?P<inner>.*)</head>', re.MULTILINE | re.DOTALL)
         # Parsing HTML with regex is not possible in general but we have
         # control over the exact HTML
         head = pattern.search(response.content).groupdict()['inner']

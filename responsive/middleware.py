@@ -4,6 +4,13 @@ from __future__ import unicode_literals
 import os
 import re
 
+try:
+    from django.utils.encoding import smart_bytes
+except ImportError:
+    # Django < 1.5 so no Python 3 support
+    smart_bytes = lambda x: x
+
+
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 
@@ -30,11 +37,11 @@ class DeviceInfoMiddleware(object):
         is_gzipped = 'gzip' in response.get('Content-Encoding', '')
         is_html = response.get('Content-Type', '').split(';')[0] in _HTML_TYPES
         if is_html and not is_gzipped:
-            pattern = re.compile('<head>', re.IGNORECASE)
+            pattern = re.compile(b'<head>', re.IGNORECASE)
             path = os.path.join(os.path.dirname(__file__), 'static', 'responsive')
             with open(os.path.join(path, 'js', 'responsive.min.js'), 'r') as f:
                 js = f.read()
-            script = b'<script type="text/javascript">' + bytes(js) + b'</script>'
+            script = b'<script type="text/javascript">' + smart_bytes(js) + b'</script>'
             response.content = pattern.sub(b'<head>' + script, response.content)
             if response.get('Content-Length', None):
                 response['Content-Length'] = len(response.content)
