@@ -8,7 +8,7 @@ try:
     from django.utils.encoding import smart_bytes
 except ImportError:
     # Django < 1.5 so no Python 3 support
-    smart_bytes = lambda x: x
+    smart_bytes = bytes
 
 
 _HTML_TYPES = ('text/html', 'application/xhtml+xml')
