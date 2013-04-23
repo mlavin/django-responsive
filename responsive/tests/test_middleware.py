@@ -25,8 +25,9 @@ class ProcessDeviceInfoTestCase(unittest.TestCase):
         device = self.request.device_info
         self.assertEqual(device['width'], None)
         self.assertEqual(device['height'], None)
+        self.assertEqual(device['type'], None)
 
-    def test_process_request_invalid_cook(self):
+    def test_process_request_invalid_cookie(self):
         "Process a request which has an invalid value in the cookie."
         self.request.COOKIES['resolution'] = 'XXXXXXXXXXXXXXX'
         self.middleware.process_request(request=self.request)
@@ -34,15 +35,18 @@ class ProcessDeviceInfoTestCase(unittest.TestCase):
         device = self.request.device_info
         self.assertEqual(device['width'], None)
         self.assertEqual(device['height'], None)
+        self.assertEqual(device['type'], None)
 
     def test_process_request_valid_cookie(self):
         "Read data from the cookie and make it available on the request."
+        # FIXME: Currently assumes default settings
         self.request.COOKIES['resolution'] = '320:480'
         self.middleware.process_request(request=self.request)
         self.assertTrue(hasattr(self.request, 'device_info'))
         device = self.request.device_info
         self.assertEqual(device['width'], 320)
         self.assertEqual(device['height'], 480)
+        self.assertEqual(device['type'], 'phone')
 
 
 class DeviceInfoScriptTestCase(unittest.TestCase):

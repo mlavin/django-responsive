@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import os
 import re
+from context_processors import _get_device_type
 
 try:
     from django.utils.encoding import smart_bytes
@@ -30,7 +31,12 @@ class DeviceInfoMiddleware(object):
                 # TODO: Add logging
                 width = None
                 height = None
-        request.device_info = {'width': width, 'height': height}
+        info = {'width': width, 'height': height}
+        if width is not None:
+            info['type'] =  _get_device_type(width)
+        else:
+            info['type'] = None
+        request.device_info = info
 
     def process_response(self, request, response):
         "Insert necessary javascript to set device info cookie."
