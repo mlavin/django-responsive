@@ -4,10 +4,10 @@ Release History
 Release and change history for django-responsive
 
 
-v0.2.0 (TBD)
+v0.2.0 (2013-06-08)
 ------------------------------------
 
-- Added experimental Python 3 support if using Django 1.5 or highers
+- Added experimental Python 3 support if using Django 1.5 or higher
 - Added device type info to the ``request.device_info`` attached by the middleware. Thanks to @pylemon
 
 
