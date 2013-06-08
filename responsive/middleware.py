@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 import os
 import re
-from context_processors import _get_device_type
+
+from .context_processors import _get_device_type
 
 try:
     from django.utils.encoding import smart_bytes
