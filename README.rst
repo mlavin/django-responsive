@@ -61,6 +61,16 @@ default breakpoints are::
         'desktop': None,
     }
 
+To overwrite the default breakpoints, include a ``RESPONSIVE_BREAKPOINTS`` 
+dictionary in the project's settings.py file::
+
+    # Name, Max Width (inclusive)
+    RESPONSIVE_BREAKPOINTS = {
+        'phone': 480,
+        'tablet': 767,
+        'desktop': None,
+    }
+
 
 License
 --------------------------------------
