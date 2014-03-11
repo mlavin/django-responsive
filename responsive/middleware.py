@@ -24,15 +24,17 @@ class DeviceInfoMiddleware(object):
         value = request.COOKIES.get('resolution', None)
         width = None
         height = None
+        pixelratio = None
         if value is not None:
             try:
-                width, height = value.split(':')
-                width, height = int(width), int(height)
+                width, height, pixelratio = value.split(':')
+                width, height, pixelratio = int(width), int(height), int(pixelratio)
             except ValueError:
                 # TODO: Add logging
                 width = None
                 height = None
-        info = {'width': width, 'height': height}
+                pixelratio = None
+        info = {'width': width, 'height': height, 'pixelratio': pixelratio}
         if width is not None:
             info['type'] =  _get_device_type(width)
         else:

@@ -13,7 +13,7 @@
     // Check if cookie was previously set
     prevSet = isCookieSet();
     // Set the cookie
-    document.cookie = cookieName + '=' + screen.width + ':' + screen.height + '; path=/';
+    document.cookie = cookieName + '=' + screen.width + ':' + screen.height + ':' + (window.devicePixelRatio ? window.devicePixelRatio : 1) + '; path=/';
     // Force browser refresh if not previously set
     if (navigator.cookieEnabled && !prevSet) document.location.reload(true);
 }(document, screen));

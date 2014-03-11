@@ -17,7 +17,7 @@ def _get_device_type(width):
 
 def device_info(request):
     "Add processed device info into the template context."
-    default = {'width': None, 'height': None}
+    default = {'width': None, 'height': None, 'pixelratio': None}
     info =  getattr(request, 'device_info', default)
     width = info.get('width', None)
     if width is not None:
