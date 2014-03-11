@@ -24,7 +24,7 @@ class DeviceInfoContextTestCase(unittest.TestCase):
     def test_default_device_info(self):
         "Return default info if info is not attached to the request."
         result = device_info(self.request)
-        default = {'width': None, 'height': None, 'type': None}
+        default = {'width': None, 'height': None, 'type': None, 'pixelratio': None}
         self.assertEqual(result['device_info'], default)
 
     def test_device_type(self):
