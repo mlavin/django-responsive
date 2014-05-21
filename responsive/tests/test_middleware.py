@@ -51,6 +51,19 @@ class ProcessDeviceInfoTestCase(unittest.TestCase):
         self.assertEqual(device['type'], 'phone')
         self.assertEqual(device['pixelratio'], 2)
 
+    def test_process_request_float_pixelratio(self):
+        """
+        `pixelratio` can be a float when the user uses in-browser zoom and
+        should give us valid device info.
+        """
+        self.request.COOKIES['resolution'] = '1920:1200:1.100000023841858'  # 110%
+        self.middleware.process_request(request=self.request)
+        device = self.request.device_info
+        self.assertEqual(device['width'], 1920)
+        self.assertEqual(device['height'], 1200)
+        self.assertEqual(device['type'], 'desktop')
+        self.assertEqual(device['pixelratio'], 1.100000023841858)
+
 
 class DeviceInfoScriptTestCase(unittest.TestCase):
     "Middleware for including necessary script tags in HTML responses."
