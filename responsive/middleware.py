@@ -28,7 +28,7 @@ class DeviceInfoMiddleware(object):
         if value is not None:
             try:
                 width, height, pixelratio = value.split(':')
-                width, height, pixelratio = int(width), int(height), int(pixelratio)
+                width, height, pixelratio = int(width), int(height), float(pixelratio)
             except ValueError:
                 # TODO: Add logging
                 width = None
@@ -36,7 +36,7 @@ class DeviceInfoMiddleware(object):
                 pixelratio = None
         info = {'width': width, 'height': height, 'pixelratio': pixelratio}
         if width is not None:
-            info['type'] =  _get_device_type(width)
+            info['type'] = _get_device_type(width)
         else:
             info['type'] = None
         request.device_info = info
