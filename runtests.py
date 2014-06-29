@@ -13,7 +13,7 @@ if not settings.configured:
                 'NAME': ':memory:',
             }
         },
-        MIDDLEWARE_CLASESS=(
+        MIDDLEWARE_CLASSES=(
             'django.middleware.common.CommonMiddleware',
             'django.middleware.csrf.CsrfViewMiddleware',
         ),
