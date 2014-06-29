@@ -24,8 +24,7 @@ Installation
 ------------------------------------
 
 django-responsive requires Python 2.6 or 2.7 and django>=1.3. There is experimental
-support for Python 3.2 if using along with current development version of Django (1.5).
-It is easiest to install django-responsive from PyPi using pip::
+support for Python 3.2 if using Django >= 1.5. It is easiest to install django-responsive from PyPi using pip::
 
     pip install django-responsive
 
