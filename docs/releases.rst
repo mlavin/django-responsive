@@ -8,6 +8,7 @@ v0.3.0 (TBD)
 ------------------------------------
 
 - Included pixelratio in the device information. Thanks to @svleeuwen for the initial patch and Tino de Bruijn for fixes related to zoom.
+- Handle streaming responses.
 
 
 v0.2.0 (2013-06-08)

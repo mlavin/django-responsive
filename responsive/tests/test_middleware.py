@@ -6,6 +6,11 @@ from django.http import HttpResponse
 from django.test.client import RequestFactory
 from django.utils import unittest
 
+try:
+    from django.http import StreamingHttpResponse
+except ImportError:
+    StreamingHttpResponse = None
+
 
 from responsive.middleware import DeviceInfoMiddleware
 
@@ -103,20 +108,20 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
         # Parsing HTML with regex is not possible in general but we have
         # control over the exact HTML
         head = pattern.search(response.content).groupdict()['inner']
-        self.assertTrue(b'</script>' in head)
+        self.assertIn(b'</script>', head)
 
     def test_non_html_content_type(self):
         "Don't insert if the content type is not html or xhtml."
         response = self.view(self.request, content='{}', content_type='application/json')
         response = self.middleware.process_response(self.request, response)
-        self.assertFalse(b'</script>' in response.content)
+        self.assertNotIn(b'</script>', response.content)
 
     def test_gzipped_html(self):
         "Don't insert if the content had been gzipped."
         response = self.view(self.request)
         response['Content-Encoding'] = 'gzip'
         response = self.middleware.process_response(self.request, response)
-        self.assertFalse(b'</script>' in response.content)
+        self.assertNotIn(b'</script>', response.content)
 
     def test_unicode_content(self):
         "Ensure insertion will still work with unicode body content."
@@ -132,6 +137,16 @@ class DeviceInfoScriptTestCase(unittest.TestCase):
         </html>
         """
         response = self.view(self.request, content=html)
-        self.assertFalse(b'</script>' in response.content)
+        self.assertNotIn(b'</script>', response.content)
         response = self.middleware.process_response(self.request, response)
-        self.assertTrue(b'</script>' in response.content)
+        self.assertIn(b'</script>', response.content)
+
+    def test_streaming_response(self):
+        "Tag will not be added to a streaming response."
+        if StreamingHttpResponse is None:
+            self.skipTest('No StreamingHttpResponse')
+        else:
+            view = lambda r: StreamingHttpResponse(b'')
+            response = view(self.request)
+            response = self.middleware.process_response(self.request, response)
+            self.assertNotIn(b'</script>', response.streaming_content)

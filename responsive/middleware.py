@@ -43,15 +43,16 @@ class DeviceInfoMiddleware(object):
 
     def process_response(self, request, response):
         "Insert necessary javascript to set device info cookie."
-        is_gzipped = 'gzip' in response.get('Content-Encoding', '')
-        is_html = response.get('Content-Type', '').split(';')[0] in _HTML_TYPES
-        if is_html and not is_gzipped:
-            pattern = re.compile(b'<head>', re.IGNORECASE)
-            path = os.path.join(os.path.dirname(__file__), 'static', 'responsive')
-            with open(os.path.join(path, 'js', 'responsive.min.js'), 'r') as f:
-                js = f.read()
-            script = b'<script type="text/javascript">' + smart_bytes(js) + b'</script>'
-            response.content = pattern.sub(b'<head>' + script, response.content)
-            if response.get('Content-Length', None):
-                response['Content-Length'] = len(response.content)
+        if not getattr(response, 'streaming', False):
+            is_gzipped = 'gzip' in response.get('Content-Encoding', '')
+            is_html = response.get('Content-Type', '').split(';')[0] in _HTML_TYPES
+            if is_html and not is_gzipped:
+                pattern = re.compile(b'<head>', re.IGNORECASE)
+                path = os.path.join(os.path.dirname(__file__), 'static', 'responsive')
+                with open(os.path.join(path, 'js', 'responsive.min.js'), 'r') as f:
+                    js = f.read()
+                script = b'<script type="text/javascript">' + smart_bytes(js) + b'</script>'
+                response.content = pattern.sub(b'<head>' + script, response.content)
+                if response.get('Content-Length', None):
+                    response['Content-Length'] = len(response.content)
         return response
