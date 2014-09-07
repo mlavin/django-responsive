@@ -1,10 +1,8 @@
 Django-Responsive
 ========================
 
-.. image::
-    https://secure.travis-ci.org/mlavin/django-responsive.png?branch=master
-    :alt: Build Status
-        :target: https://secure.travis-ci.org/mlavin/django-responsive
+.. image:: https://travis-ci.org/mlavin/django-responsive.svg?branch=master
+    :target: https://travis-ci.org/mlavin/django-responsive
 
 
 django-responsive a utility application for building responsive websites
